@@ -12,10 +12,10 @@ class FileStorage:
         """Returns the list of objects of one type of class"""
         filtered = []
         if cls is None:
-            return FileStorage.__objects.values()
+            return FileStorage.__objects
         else:
-            filtered = [obj for obj in FileStorage.__objects.values()
-                        if isinstance(obj, cls)]
+            filtered = {key: obj for key, obj in FileStorage.__objects.items()
+                        if isinstance(obj, cls)}
         return filtered
 
     def new(self, obj):
@@ -51,13 +51,13 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
 
     def delete(self, obj=None):
         """Deletes obj from __objects if it exists, if obj = None do nothing"""
         if obj is not None:
-            k ="{}.{}".format(obj.__class__.__name__, obj.id)
+            k = "{}.{}".format(obj.__class__.__name__, obj.id)
             FileStorage.__objects.pop(k, None)
             self.save()
