@@ -12,7 +12,7 @@ class FileStorage:
         """Returns the list of objects of one type of class"""
         filtered = []
         if cls is None:
-            filtered = list(FileStorage.__objects.values())
+            return FileStorage.__objects.values()
         else:
             filtered = [obj for obj in FileStorage.__objects.values()
                         if isinstance(obj, cls)]
