@@ -8,13 +8,14 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self,cls=None):
+    def all(self, cls=None):
         """Returns the list of objects of one type of class"""
         filtered = []
         if cls is None:
             filtered = list(FileStorage.__objects.values())
         else:
-            filtered = [obj for obj in FileStorage.__objects.values() if isinstance(obj, cls)]
+            filtered = [obj for obj in FileStorage.__objects.values()
+                        if isinstance(obj, cls)]
         return filtered
 
     def new(self, obj):
@@ -58,5 +59,5 @@ class FileStorage:
         """Deletes obj from __objects if it exists, if obj = None do nothing"""
         if obj is None:
             return
-        k = "{}.{}".format(obj.__class__.__name__, obj.id)
+        k ="{}.{}".format(obj.__class__.__name__, obj.id)
         del  self.__objects[k]
