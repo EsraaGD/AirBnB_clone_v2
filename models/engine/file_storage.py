@@ -60,4 +60,4 @@ class FileStorage:
         if obj is None:
             return
         k ="{}.{}".format(obj.__class__.__name__, obj.id)
-        del  self.__objects[k]
+        FileStorage.__objects.pop(k, None)
