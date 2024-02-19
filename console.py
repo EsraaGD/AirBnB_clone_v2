@@ -120,6 +120,7 @@ class HBNBCommand(cmd.Cmd):
             dic_args = dict()
             for item in list_args:
                 key, value = item.split('=')
+                value = value.replace("_", " ").replace("\"", "")
                 dic_args[key] = value
 
             args = args[:args.index(' ')]
