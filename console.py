@@ -132,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 value = int(value)
             setattr(new_instance, key, value)
-            
+
         if cname not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
