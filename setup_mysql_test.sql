@@ -2,6 +2,7 @@
 CREATE DATABASE IF NOT EXISTS hbnb_test_db;
 
 -- Create the user and set the password
+DROP USER IF EXISTS 'hbnb_test'@'localhost';
 CREATE USER 'hbnb_test'@'localhost' IDENTIFIED BY 'hbnb_test_pwd';
 
 -- Grant all privileges on the hbnb_test_db database
