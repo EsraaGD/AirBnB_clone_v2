@@ -67,9 +67,5 @@ class BaseModel:
 
     def delete(self):
         """Deletes obj from __objects if it exists, if obj = None do nothing"""
-        from models import storage
-
-        if self is not None:
-            k = "{}.{}".format(self.__class__.__name__, self.id)
-            storage.__objects.pop(k, None)
-            self.save()
+        import models
+        models.storage.delete(self)
