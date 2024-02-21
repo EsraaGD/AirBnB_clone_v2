@@ -222,16 +222,18 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
 
-            for v in storage.all(HBNBCommand.classes[args]):
-                classname, objid = v[1].split('.')
+            objects = storage.all(HBNBCommand.classes[args])
+            for obj_key, obj in objects.items():
+                classname, objid = obj_key.split('.')
                 obj_info = "[{}] ({}) {}".format(
-                    classname, objid, v[2])
+                    classname, objid, obj.to_dict())
                 print_list.append(obj_info)
         else:
-            for v in storage.all():
-                classname, objid = v[1].split('.')
+            objects = storage.all()
+            for obj_key, obj in objects.items():
+                classname, objid = obj_key.split('.')
                 obj_info = "[{}] ({}) {}".format(
-                    classname, objid, v[2])
+                    classname, objid, obj.to_dict())
                 print_list.append(obj_info)
 
         # If you need the list for further use, uncomment the line below

@@ -1,0 +1,9 @@
+{
+    "City.16eec704-ad29-4123-9a2e-d046f9f224f6": {
+        "id": "16eec704-ad29-4123-9a2e-d046f9f224f6",
+        "created_at": "2024-02-21T10:38:33.414056",
+        "updated_at": "2024-02-21T10:38:33.414062",
+        "name": "San_Francisco",
+        "__class__": "City"
+    }
+}

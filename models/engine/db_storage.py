@@ -3,9 +3,13 @@
 from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-import models
+from models.amenity import Amenity
+from models.city import City
 from models.base_model import Base
+from models.place import Place
+from models.review import Review
 from models.state import State
+from models.user import User
 
 
 class DBStorage:
@@ -27,31 +31,21 @@ class DBStorage:
             Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
-        """Query on the current database session all objects"""
-        result = []
+        """Queries the current database session based on class name"""
+        new_dict = {}
         if cls:
-            cls_model = State
-            query = self.__session.query(cls_model)
-            for item in query:
-                obj_info = "{}.{}".format(type(item).__name__, item.id)
-                obj_dict = item.to_dict()
-                result.append([type(item)] + [obj_info, obj_dict])
+            objs = self.__session.query(cls).all()
+            for obj in objs:
+                key = "{}.{}".format(type(obj).__name__, obj.id)
+                new_dict[key] = obj
         else:
-            classes = [
-                getattr(
-                    models,
-                    name) for name in dir(models) if isinstance(
-                    getattr(
-                        models,
-                        name),
-                    type)]
-            for c in classes:
-                query = self.__session.query(c)
-                for item in query:
-                    obj_info = "{}.{}".format(type(item).__name__, item.id)
-                    obj_dict = item.to_dict()
-                    result.append([type(item)] + [obj_info, obj_dict])
-        return result
+            classes = [User, State, City, Amenity, Place, Review]
+            for class_ in classes:
+                objs = self.__session.query(class_).all()
+                for obj in objs:
+                    key = "{}.{}".format(type(obj).__name__, obj.id)
+                    new_dict[key] = obj
+        return new_dict
 
     def new(self, obj):
         """Add the object to the current database session"""
