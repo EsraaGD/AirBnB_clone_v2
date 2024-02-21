@@ -14,12 +14,28 @@ class State(BaseModel):
     name = Column(String(128), nullable=False)
 
     # For DBStorage
-    cities = relationship("City", back_populates="state",
-                          cascade="all, delete-orphan")
+    # cities = relationship("City", back_populates="state",
+    # cascade="all, delete-orphan")
 
     # For FileStorage
-    @property
-    def cities(self):
-        """Getter attribute for cities"""
-        from models import storage
-        return [city for city in storage.all(City).values() if city.state_id == self.id]
+    # @property
+    # def cities(self):
+    #"""Getter attribute for cities"""
+    #from models import storage
+    # return [city for city in storage.all(City).values() if city.state_id ==
+    # self.id]
+
+    # For DB
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+        cities = relationship("City", cascade="all, delete", backref="state")
+
+# For file storage
+    if os.getenv('HBNB_TYPE_STORAGE') == 'file':
+        @property
+        def cities(self):
+            from models import storage
+            cities_list = []
+            for city in storage.all("City").values():
+                if city.state_id == self.id:
+                    cities_list.append(city)
+            return cities_list
