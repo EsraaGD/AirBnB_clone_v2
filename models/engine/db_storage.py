@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import os
+from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 import models
@@ -17,13 +17,13 @@ class DBStorage:
     def __init__(self):
         """Create a new instance of DBStorage"""
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}:{}/{}'
-                                      .format(os.getenv('HBNB_MYSQL_USER'),
-                                              os.getenv('HBNB_MYSQL_PWD'),
-                                              os.getenv('HBNB_MYSQL_HOST'),
+                                      .format(getenv('HBNB_MYSQL_USER'),
+                                              getenv('HBNB_MYSQL_PWD'),
+                                              getenv('HBNB_MYSQL_HOST'),
                                               '3306',  # Port remains unchanged
-                                              os.getenv('HBNB_MYSQL_DB')),
+                                              getenv('HBNB_MYSQL_DB')),
                                       pool_pre_ping=True)
-        if os.getenv('HBNB_ENV') == 'test':
+        if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
