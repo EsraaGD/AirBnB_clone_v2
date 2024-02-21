@@ -3,11 +3,9 @@
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-#from models.base_model import BaseModel
 import models
 from models.base_model import Base
 from models.state import State
-from models import base_model
 
 
 class DBStorage:
@@ -69,10 +67,11 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
-        """Create all tables in the database and initialize a new session"""
+        """configuration """
         Base.metadata.create_all(self.__engine)
-        Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        self.__session = scoped_session(Session)
+        sec = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(sec)
+        self.__session = Session()
 
     def close(self):
         """Close the current session"""
