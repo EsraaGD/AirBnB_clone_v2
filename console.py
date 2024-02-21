@@ -226,14 +226,12 @@ class HBNBCommand(cmd.Cmd):
                 classname, objid = v[1].split('.')
                 obj_info = "[{}] ({}) {}".format(
                     classname, objid, v[2])
-                print(obj_info)
                 print_list.append(obj_info)
         else:
             for v in storage.all():
                 classname, objid = v[1].split('.')
                 obj_info = "[{}] ({}) {}".format(
                     classname, objid, v[2])
-                print(obj_info)
                 print_list.append(obj_info)
 
         # If you need the list for further use, uncomment the line below
