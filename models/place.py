@@ -9,7 +9,7 @@ from os import getenv
 from models.base_model import Base
 
 
-place_amenity = Table('place_amenity', Base.metadata,
+association_table = Table('place_amenity', Base.metadata,
                       Column('place_id', String(60),
                              ForeignKey('places.id'), primary_key=True,
                              nullable=False),
@@ -33,9 +33,13 @@ class Place(BaseModel, Base):
     latitude = Column(Float)
     longitude = Column(Float)
 
+    amenity_ids = []
+    
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         reviews = relationship(
             "Review", cascade="all, delete-orphan", backref="place")
+        amenities = relationship("Amenity", secondary="place_amenity",
+                                 viewonly=False)
 
     else:
         @property
@@ -48,23 +52,18 @@ class Place(BaseModel, Base):
                     review_list.append(review)
             return review_list
 
-    if getenv('HBNB_TYPE_STORAGE') == 'db':
-        amenities = relationship("Amenity", secondary="place_amenities",
-                                 back_populates="place_amenities")
-    else:
         @property
-        def amenities(self):
-            """ Getter attribute for amenities in FileStorage """
+        def amenity(self):
+            """ getter attribute returns the list of Amenity instances """
             from models import storage
             amenity_list = []
-            for amenity_id in self.amenity_id:
-                amenity = storage.get("Amenity", amenity_id)
-                if amenity:
-                    amenity_list.append(amenity)
+            for key, value in storage.all(Amenity).items():
+                if value.place_id == self.id:
+                    amenity_list.append(value)
             return amenity_list
 
-        @amenities.setter
-        def amenities(self, amenity):
+        @amenity.setter
+        def amenities(self, obj):
             """ Setter method to add an Amenity to Place object """
-            if isinstance(amenity, Amenity):
-                self.amenity_id.append(amenity.id)
+            if type(obj) == Amenity:
+                self.amenity_ids.append(obj.id)
