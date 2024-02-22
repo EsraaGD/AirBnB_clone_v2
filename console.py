@@ -123,6 +123,10 @@ class HBNBCommand(cmd.Cmd):
         cname = args.split()[0]
         new_instance = HBNBCommand.classes[cname]()
 
+        if cname not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+
         for item in list_args:
             key, value = item.split('=')
             if '\"' in value:
@@ -132,10 +136,6 @@ class HBNBCommand(cmd.Cmd):
             else:
                 value = int(value)
             setattr(new_instance, key, value)
-
-        if cname not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
 
         new_instance.save()
         storage.save()
