@@ -38,3 +38,4 @@ sudo sed -i "/# Only/ i $config_block" /etc/nginx/sites-available/default
 sudo service nginx restart
 
 exit 0
+
