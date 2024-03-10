@@ -15,18 +15,31 @@ def do_deploy(archive_path):
     if not path.exists(archive_path):
         return False
     try:
+        # Upload archive to /tmp/ directory on web servers
         put(archive_path, "/tmp/")
-        name = archive_path.split('/')[1].split('.')[0]
-        sudo("mkdir -p /data/web_static/releases/{}/".format(name))
-        sudo("tar -xzf /tmp/{}.tgz -C /data/web_static/releases/{}/"
-             .format(name, name))
-        run("rm /tmp/{}.tgz".format(name))
-        sudo("mv /data/web_static/releases/{}/web_static/*\
-             /data/web_static/releases/{}/".format(name, name))
-        sudo("rm -rf /data/web_static/releases/{}/web_static".format(name))
-        sudo("rm -rf /data/web_static/current")
-        sudo("ln -s /data/web_static/releases/{}/ /data/web_static/current"
-             .format(name))
+
+        # Extract archive to /data/web_static/releases/<filename> directory
+        filename = archive_path.split('/')[-1]  # Extract filename from path
+        name = filename.split('.')[0]  # Extract filename without extension
+        release_path = "/data/web_static/releases/{}/".format(name)
+        sudo("mkdir -p {}".format(release_path))
+        sudo("tar -xzf /tmp/{} -C {}".format(filename, release_path))
+
+        # Remove archive from /tmp/ directory
+        run("rm /tmp/{}".format(filename))
+
+        # Move contents of extracted folder to release_path
+        sudo("mv {}web_static/* {}".format(release_path, release_path))
+
+        # Clean up extracted folder
+        sudo("rm -rf {}web_static".format(release_path))
+
+        # Update symbolic link
+        current_path = "/data/web_static/current"
+        sudo("rm -rf {}".format(current_path))
+        sudo("ln -s {} {}".format(release_path, current_path))
+
         return True
-    except Exception:
+    except Exception as e:
+        print("Exception:", e)
         return False
