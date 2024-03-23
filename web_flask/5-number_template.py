@@ -24,9 +24,9 @@ def display_c(text):
     return 'C {}'.format(text.replace('_', ' '))
 
 
-@app.route('/python/', default={'text': 'is_cool'}, strict_slashes=False)
+@app.route('/python/', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
-def display_py(text):
+def display_py(text='is cool'):
     """Display "Python" message"""
     text = text.replace('_', ' ')
     return 'Python {}'.format(text)
@@ -35,15 +35,13 @@ def display_py(text):
 @app.route('/number/<int:n>', strict_slashes=False)
 def display_number(n):
     """Display "n is a number" message"""
-    return '{} is a number'.format(n)
+    return '{:d} is a number'.format(n)
 
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
 def display_num_template(n):
     """Display "n is a number" message"""
-    if isinstance(n, int):
-        return render_template('5-number.html', n=n)
-    return '{} is a number'.format(n)
+    return render_template('5-number.html', n=n)
 
 
 if __name__ == "__main__":
