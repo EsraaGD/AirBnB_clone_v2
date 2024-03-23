@@ -10,7 +10,7 @@ app = Flask(__name__)
 def state_list():
     """Display html page with states list from A-Z"""
     s = sorted(list(storage.all("State").values()
-    return render_template('7-state_list.html', states=s)
+    return render_template('7-states_list.html', states=s)
 
 @app.teardown_appcontext
 def teardown(error):
