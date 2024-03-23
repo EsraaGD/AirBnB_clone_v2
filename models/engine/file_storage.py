@@ -65,3 +65,7 @@ class FileStorage:
             k = "{}.{}".format(obj.__class__.__name__, obj.id)
             FileStorage.__objects.pop(k, None)
             self.save()
+
+    def close(self):
+        """Method for deserializing the JSON file to objects"""
+        self.reload()
