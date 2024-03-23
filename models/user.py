@@ -16,7 +16,6 @@ class User(BaseModel, Base):
     places = relationship(
         "Place", cascade='all, delete, delete-orphan', backref="user")
 
-    from models.review import Review
     reviews = relationship(
         "Review", cascade='all, delete, delete-orphan', backref='user',
         single_parent=True, uselist=True)
