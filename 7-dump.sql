@@ -34,8 +34,8 @@ USE hbnb_dev_db;
 
 DROP TABLE IF EXISTS `cities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-SET character_set_client = utf8;
-CREATE TABLE cities (
+SET character_set_client=utf8;
+CREATE TABLE `cities` (
   `id` varchar(60) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
