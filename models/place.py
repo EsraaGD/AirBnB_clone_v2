@@ -41,7 +41,7 @@ class Place(BaseModel, Base):
         reviews = relationship(
             "Review", cascade="all, delete-orphan", backref="place")
         amenities = relationship("Amenity", secondary="place_amenity",
-                                 viewonly=False, back_populates="amenities")
+                                 viewonly=False, back_populates="place_amenities")
 
     else:
         @property
@@ -55,7 +55,7 @@ class Place(BaseModel, Base):
             return review_list
 
         @property
-        def amenity(self):
+        def amenit(self):
             """ getter attribute returns the list of Amenity instances """
             from models import storage
             amenity_list = []
@@ -64,7 +64,7 @@ class Place(BaseModel, Base):
                     amenity_list.append(value)
             return amenity_list
 
-        @amenity.setter
+        @amenities.setter
         def amenities(self, obj):
             """ Setter method to add an Amenity to Place object """
             if type(obj) == Amenity:
