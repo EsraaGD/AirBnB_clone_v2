@@ -54,8 +54,14 @@ class Place(BaseModel, Base):
                     review_list.append(review)
             return review_list
 
+        @amenities.setter
+        def amenities(self, obj):
+            """ Setter method to add an Amenity to Place object """
+            if type(obj) == Amenity:
+                self.amenity_ids.append(obj.id)
+
         @property
-        def amenit(self):
+        def amenity(self):
             """ getter attribute returns the list of Amenity instances """
             from models import storage
             amenity_list = []
@@ -64,8 +70,4 @@ class Place(BaseModel, Base):
                     amenity_list.append(value)
             return amenity_list
 
-        @amenities.setter
-        def amenities(self, obj):
-            """ Setter method to add an Amenity to Place object """
-            if type(obj) == Amenity:
-                self.amenity_ids.append(obj.id)
+        
