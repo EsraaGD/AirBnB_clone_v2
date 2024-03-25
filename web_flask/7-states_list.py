@@ -10,7 +10,9 @@ app = Flask(__name__)
 
 @app.route('/states_list', strict_slashes=False)
 def state_list():
-    """Display html page with states list from A-Z
+    """Display an HTML page with a list of states sorted from A-Z.
+    The states are retrieved from the storage,
+    sorted, and then passed to the template.
     """
     s = sorted(list(storage.all("State").values()))
     return render_template('7-state_list.html', states=s)
@@ -19,6 +21,8 @@ def state_list():
 @app.teardown_appcontext
 def teardown(error):
     """Remove the current SQLAlchemy Session
+    This function is called after each request,
+    ensuring that database resources are properly released.
     """
     storage.close()
 
